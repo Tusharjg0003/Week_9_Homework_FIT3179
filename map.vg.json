@@ -1,0 +1,40 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 900,
+    "height": 480,
+    "projection": {"type": "equalEarth"},
+    "data": {
+      "url": "data/countries.topojson",
+      "format": {"type": "topojson", "feature": "ne_110m_admin_0_countries"}
+    },
+    "transform": [
+      {
+        "lookup": "properties.ISO_A3",
+        "from": {
+          "data": {"url": "data/overweight(2022).csv"},
+          "key": "SpatialDimValueCode",
+          "fields": ["FactValueNumeric", "Location"]
+        }
+      }
+    ],
+    "mark": {"type": "geoshape"},
+    "encoding": {
+      "color": {
+        "field": "FactValueNumeric",
+        "type": "quantitative",
+        "title": "Overweight %",
+        "scale": {"scheme": "reds"},
+        "legend": {
+          "orient": "right",
+          "titleFontSize": 13,
+          "labelFontSize": 11,
+          "titlePadding": 10
+        }
+      },
+      "tooltip": [
+        {"field": "Location", "title": "Country"},
+        {"field": "FactValueNumeric", "title": "Overweight %", "format": ".2f"}
+      ]
+    }
+  }
+  
